@@ -3,10 +3,18 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <set>
+#include <map>
+#include <algorithm>
 bool check_vec(int sum,const std::vector<int>& v) {
-	for (int i = 0; i < v.size(); i++) {
-		if (v.at(i) == sum) {
-			return true;
+	std::vector<int>::const_iterator it = v.begin();
+	int count = 0;
+	for (; it != v.end();++it) {
+		if (*it == sum) {
+			count++;
+			if (count == 2) {
+				return true;
+			}
 		}
 	}
 	return false;
@@ -14,10 +22,12 @@ bool check_vec(int sum,const std::vector<int>& v) {
 int main() {
 	int sum = 0;
 	int x;
-	std::vector<int> v;
-	v.push_back(sum);
+	std::map<int,int> m;
+	++m[sum];
+	
 	std::fstream in("Text.txt");
 	std::string line;
+
 	while (std::getline(in, line)) {
 		
 
@@ -26,26 +36,22 @@ int main() {
 			std::stringstream s(line);
 			s >> x;
 			sum -= x;
-			
-			if (check_vec(sum, v)) {
-				std::cout << sum << "\n";
-				return 0;
-			}
-			v.push_back(sum);
-
 		}
 		else{
 			line = line.substr(1, line.size() - 1);
 			std::stringstream s(line);
 			s >> x;
 			sum += x;
-			
-			if (check_vec(sum, v)) {
-				std::cout << sum<<"\n";
-				return 0;
-			}
-			v.push_back(sum);
 		}
+		std::cout << sum << "\n";
+		if (++m[sum]==2) {
+			std::cout << sum;
+			return 0;
+		}
+		else {
+			++m[sum];
+		}
+		
+
 	}
-	std::cout << "no number";
 }
