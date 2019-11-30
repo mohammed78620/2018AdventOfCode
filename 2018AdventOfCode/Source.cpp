@@ -9,49 +9,56 @@
 bool check_vec(int sum,const std::vector<int>& v) {
 	std::vector<int>::const_iterator it = v.begin();
 	int count = 0;
-	for (; it != v.end();++it) {
-		if (*it == sum) {
-			count++;
-			if (count == 2) {
-				return true;
-			}
-		}
+	if (std::count(v.begin(), v.end(), sum) > 1) {
+		return true;
 	}
 	return false;
-}
-int main() {
-	int sum = 0;
-	int x;
-	std::map<int,int> m;
-	++m[sum];
 	
+}
+int findFirstFrequency(int &sum,std::vector<int>& v) {
+	int x;
 	std::fstream in("Text.txt");
 	std::string line;
 
 	while (std::getline(in, line)) {
-		
+
 
 		if (line[0] == '-') {
 			line = line.substr(1, line.size() - 1);
 			std::stringstream s(line);
 			s >> x;
 			sum -= x;
+			
+			
 		}
-		else{
+		else {
 			line = line.substr(1, line.size() - 1);
 			std::stringstream s(line);
 			s >> x;
 			sum += x;
+			
 		}
-		std::cout << sum << "\n";
-		if (++m[sum]==2) {
+		v.push_back(sum);
+		if (check_vec(sum, v)) {
 			std::cout << sum;
+			sum = 0;
 			return 0;
 		}
-		else {
-			++m[sum];
-		}
 		
-
+		
+		std::cout << sum << "\n";
+	}
+	return sum;
+}
+int main() {
+	int sum = 0;
+	std::vector<int> v;
+	v.push_back(sum);
+	if (findFirstFrequency(sum, v) == 0) {
+		return 0;
+	}
+	
+	while (findFirstFrequency !=0) {
+		findFirstFrequency(sum, v);
 	}
 }
